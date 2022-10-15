@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimal Page Replacement</title>
+    <link rel="stylesheet" href="./fcfs.css">
+</head>
+
+<body>
+    <h1>Optimal Page Replacement Algorithm</h1>
+    <h2>What are Replacement Algorithms?</h2>
+    <p>Generally, most operating systems use the method of paging for memory management. These algorithms are needed to
+        make a
+        decision of which page needs to be replaced when a new page comes into the picture or is demanded.
+
+        The need for the demand occurs when the Operating Systems need any page for the processing which is not actually
+        present
+        in the main memory. This situation is also called Page Fault.
+
+        Page Fault: The page fault takes place when the main program accesses the memory page which is mapped into a
+        virtual
+        address space but is not loaded in physical memory.
+
+        When the Physical Memory is much smaller than the Virtual Memory in such a situation Page Fault happens.</p>
+    <h2>What is Optimal Page Replacement Algorithm</h2>
+    <p>The Optimal page-replacement algorithm has the most reduced page-fault rate overall page replacement algorithms
+        and it
+        will never suffer from the effect of Belady’s anomaly. Optimal page replacement is such an algorithm does exist
+        and has
+        been called OPT or MIN page replacement algorithm. It is just this: “Replace the page that won’t be utilized for
+        the
+        longest time frame.”The consequence of the revelation of Belady’s Anamoly.
+        Most reduced page fault rate of all algorithms and will never suffer from Belady’s Anamoly.
+        Just it replaces the pages that won’t be utilized for the longest time frame.
+        Optimal page replacement is accurate as possible required, but not possible in practice as the operating system
+        cannot
+        know future requests.
+        The utilization of optimal Page replacement is to set up a benchmark so that other replacement algorithms can be
+        analyzed against it.</p>
+    <h2>Advantages of Optimal Page Replacement Algorithm</h2>
+    <p>-Most reduced page fault rate. <br>
+        -Never suffers from Belady’s anomaly. <br>
+        -Twice tantamount to FIFO Page Replacement Algorithm.</p>
+    <h2>Optimal Page Replacement Algorithm</h2>
+    <ul>
+        <li>1. Start traversing the pages</li>
+        <li>2. Now declare the size w.r.t length of the Page. </li>
+        <li>3. Check need of the replacement from the page to memory.</li>
+        <li>4. Similarly, Check the need of the replacement from the old page to new page in memory.</li>
+        <li>5. If referred page is already present, increment hit count..</li>
+        <li>6. If not present, find if a page that is never referenced in future.</li>
+        <li>7. If such a page exists, replace this page with new page.</li>
+        <li>8. If no such page exists, find a page that is referenced farthest in future.</li>
+        <li>9. Replace this page with new page.</li>
+        <li>10. Stop</li>
+    </ul>
+
+    <label for="pages">Enter No.of Pages</label>
+    <input type="number" name="pages" id="pages" class="pages">
+
+    <label for="frames">Enter No.of Frames</label>
+    <input type="number" name="frames" id="frames" class="frames">
+
+    <button onclick="validate()">submit</button>
+    <div id="empty"></div>
+
+    <script>
+        function search(key, frames, f) {
+            for (var i = 0; i < f; i++)
+                if (frames[i] == key)
+                    return true;
+            return false;
+        }
+
+        function predict(pages, frames, p, index, f) {
+            var res = -1, farthest = index;
+            for (var i = 0; i < f; i++) {
+                var j;
+                for (j = index; j < p; j++) {
+                    if (frames[i] == pages[j]) {
+                        if (j > farthest) {
+                            farthest = j;
+                            res = i;
+                        }
+                        break;
+                    }
+                }
+
+                if (j == p)
+                    return i;
+            }
+            if (res == -1)
+                return 0;
+            return res;
+        }
+        function optimalPage(pages, p, f) {
+            var frames = new Array();
+            var hit = 0;
+            for (var i = 0; i < p; i++) {
+                if (search(pages[i], frames, f)) {
+                    hit++;
+                    continue;
+                }
+                if (frames.size() < f)
+                    frames.push(pages[i]);
+                else {
+                    var j = predict(pages, frames, p, i + 1, f);
+                    frames[j] = pages[i];
+                }
+            }
+            document.writeln("No of Hits = " + hit + "<br>");
+            document.writeln("No of Faults = " + p - hit);
+        }
+        function validate() {
+            var p = document.getElementById("pages").value;
+            var f = document.getElementById("frames").value;
+            var pages = new Array(p);
+            for (var i = 0; i < p; i++) {
+                pages[i] = prompt("Enter page" + (i + 1) + " reference string: ");
+            }
+            optimalPage(pages, p, f);
+        }
+    </script>
+
+
+
+    <h1>Source Code</h1>
+    <div class="code">
+        <p>#include "bits /stdc++.h" <br>
+            using namespace std;<br>
+
+            // Function to check whether a page exists
+            // in a frame or not<br>
+            bool search(int key, vector<int> &fr)<br>
+                {<br>
+                for (int i = 0; i < fr.size(); i++)<br> if (fr[i]==key)<br> return true;<br> return false;<br> }<br> //
+                    Function to find the frame
+                    that will not be used //<br> recently in future after given index in pg[0..pn-1] <br>int predict(int
+                    pg[],
+                    vector<int> &fr, int pn, int index)<br>
+                        {<br>
+                        // Store the index of pages which are going
+                        // to be used recently in future<br>
+                        int res = -1, farthest = index;<br>
+                        for (int i = 0; i < fr.size(); i++) <br>{<br> int j;<br> for (j=index; j < pn; j++) <br>{<br> if
+                                (fr[i]==pg[j]) <br>{<br> if (j>
+                                farthest)<br>
+                                {<br>
+                                farthest = j;<br>
+                                res = i;<br>
+                                }<br>
+                                break;<br>
+                                }<br>
+                                }<br>
+
+                                // If a page is never referenced in future,
+                                // return it.<br>
+                                if (j == pn)<br>
+                                return i;<br>
+                                }<br>
+
+                                // If all of the frames were not in future,
+                                // return any of them, we return 0. Otherwise
+                                // we return res.<br>
+                                return (res == -1) ? 0 : res;<br>
+                                }<br>
+
+                                void optimalPage(int pg[], int pn, int fn)<br>
+                                {<br>
+                                // Create an array for given number of
+                                // frames and initialize it as empty.<br>
+                                vector<int> fr;<br>
+
+                                    // Traverse through page reference array
+                                    // and check for miss and hit.<br>
+                                    int hit = 0;<br>
+                                    for (int i = 0; i < pn; i++)<br> { <br>// Page found in a frame : HIT<br> if
+                                        (search(pg[i], fr)) <br>{ <br>hit++;<br>
+                                        continue;<br> }<br> // Page not found in a frame : MISS<br> // If there is space
+                                        available in frames.<br> if
+                                        (fr.size() < fn)<br> fr.push_back(pg[i]);<br> // Find the page to be replaced.
+                                            <br>else <br>{<br> int j=predict(pg,
+                                            fr, pn, i + 1);<br> fr[j]=pg[i];<br> }<br> }<br> cout << "No. of hits = " <<
+                                                hit << endl;<br> cout
+                                                << "No. of misses = " << pn - hit << endl;<br> }<br> int main() <br>{
+                                                    <br>int p, f;<br> cout
+                                                    << "Enter no of pages: " ;<br> cin>> p;<br>
+                                                        cout << "Enter no of frames: " ;<br> cin>> f;<br>
+                                                            int pages[p];<br>
+                                                            cout << "Enter page reference string\n" ;<br> for (int i=0;
+                                                                i < p; i++)<br> cin>> pages[i];<br>
+                                                                    optimalPage(pages, p, f);<br>
+                                                                    }<br>
+        </p>
+    </div>
+</body>
+
+</html>

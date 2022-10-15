@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FCFS</title>
+    <link rel="stylesheet" href="./fcfs.css">
+</head>
+
+<body>
+    <h1>FIFO Page Replacement Algorithm</h1>
+    <h2>What are Replacement Algorithms?</h2>
+    <p>Generally, most operating systems use the method of paging for memory management. These algorithms are needed to
+        make a
+        decision of which page needs to be replaced when a new page comes into the picture or is demanded.
+
+        The need for the demand occurs when the Operating Systems need any page for the processing which is not actually
+        present
+        in the main memory. This situation is also called Page Fault.
+
+        Page Fault: The page fault takes place when the main program accesses the memory page which is mapped into a
+        virtual
+        address space but is not loaded in physical memory.
+
+        When the Physical Memory is much smaller than the Virtual Memory in such a situation Page Fault happens.</p>
+    <h2>What is FIFO Page Replacement Algorithm</h2>
+    <p>FIFO which is also called First In First Out is one of the types of Replacement Algorithms. This algorithm is
+        used in a
+        situation where an Operating system replaces an existing page with the help of memory by bringing a new page
+        from the
+        secondary memory.
+
+        FIFO is the simplest among all algorithms which are responsible for maintaining all the pages in a queue for an
+        operating system and also keeping track of all the pages in a queue.
+
+        The older pages are kept in the front and the newer ones are kept at the end of the queue. Pages that are in the
+        front
+        are removed first and the pages which are demanded are added. <br>
+        Belady’s anomaly proves that it is possible to have more page faults when increasing the number of page frames
+        while
+        using the First in First Out (FIFO) page replacement algorithm.</p>
+    <h2>Advantages of FIFO</h2>
+    <p>-FIFO is more efficient because it allows for data to be organized in chronological. <br>
+        -FIFO is more efficient because it allows for data to be organized in itemized order. <br>
+        -FIFO is more efficient because it can be marketed to businesses because it is easy to use.</p>
+    <h2>FIFO Page Replacement Algorithm</h2>
+    <ul>
+        <li>1. Start traversing the pages</li>
+        <li>2. Now declare the size w.r.t length of the Page. </li>
+        <li>3. Check need of the replacement from the page to memory.</li>
+        <li>4. Similarly, Check the need of the replacement from the old page to new page in memory.</li>
+        <li>5. Now form the queue to hold all pages.</li>
+        <li>6. Now form the queue to hold all pages.</li>
+        <li>7. Check bad replacemets and page faults.</li>
+        <li>8. Get no of processes to be inserted.</li>
+        <li>9. Show the values.</li>
+        <li>10. Stop</li>
+    </ul>
+
+    <label for="pages">Enter No.of Pages</label>
+    <input type="number" name="pages" id="pages" class="pages">
+
+    <label for="frames">Enter No.of Frames</label>
+    <input type="number" name="frames" id="frames" class="frames">
+
+    <button onclick="validate()">submit</button>
+    <div id="empty"></div>
+
+    <script>
+        function validate() {
+            var hit = 0, flag, fault = 0, some = 0;
+            var p = document.getElementById("pages").value;
+            var f = document.getElementById("frames").value;
+            var pag = new Array(p);
+            var fra = new Array(f);
+            for (var i = 0; i < p; i++) {
+                pag[i] = prompt("Enter page" + (i + 1) + " reference string: ");
+            }
+            for (var i = 0; i < p; i++) {
+                flag = 0;
+                for (var j = 0; j < f; j++) {
+                    if (pag[i] == fra[j]) {
+                        hit++;
+                        flag = 1;
+                    }
+                }
+                if (flag != 1) {
+                    fault++;
+                    fra[some] = pag[i];
+                    some++;
+                    if (some >= f)
+                        some = 0;
+                    for (var j = 0; j < f; j++)
+                        document.write(fra[j] + " ");
+                    document.write("x" + "<br/>");
+                }
+                else {
+                    for (var j = 0; j < f; j++)
+                        document.write(fra[j] + " ");
+                    document.write("v" + "<br/>");
+                }
+            }
+            document.writeln("No of Page Hits = " + hit + "<br/>");
+            document.writeln("No of Page Faults = " + fault);
+        }
+    </script>
+
+
+
+    <h1>Source Code</h1>
+    <div class="code">
+        <p>#include "bits/stdc++.h"<br>
+            using namespace std;<br>
+            <br>
+            int main() <br>
+            {<br>
+            int p, f, hit = 0, flag, fault = 0, some = 0;<br>
+            cout << "Enter no of pages: " ; <br> cin>> p;<br>
+                cout << "Enter no of frames: " ; <br>cin>> f;<br>
+                    vector<int> pages(p), frames(f);<br>
+                        cout << "enter page reference strings\n" ;<br> for (int i=0; i < p; i++)<br> {<br> cin>>
+                                pages[i];<br>
+                                }<br>
+                                <br>
+                                /* initially frames are empty so till the frames are filled<br>
+                                the below code executes*/<br>
+                                for (int i = 0; i < f; i++)<br> { <br>frames[i]=pages[i];<br> for (int j=0; j <=i;
+                                        j++)<br> cout << frames[j] << " " ; <br>cout << "x" << "\n" ; <br>}
+                                                <br>/*this
+                                                count the frames as fault since the<br>
+                                                pages are at fault until the frames are full*/ <br>fault +=f;
+                                                <br>for
+                                                (int i=f; i < p; i++)<br> {<br>
+                                                    flag=0;<br> /* it checks whether the given string reference is
+                                                    present in the frames or not*/
+                                                    <br> for (int j=0; j < f; j++) <br>{ <br>// if reference string
+                                                        is
+                                                        present page hit is incremented by
+                                                        one <br>if (pages[i]==frames[j]) <br>{ <br>hit++;
+                                                        flag=1;<br>
+                                                        }<br> } <br>/*if fault occured then the fault
+                                                        value is incremented and<br> frames array is updated*/
+                                                        <br>if
+                                                        (flag !=1) <br>{<br> fault++;<br>
+                                                        frames[some]=pages[i]; <br>some++;<br> if (some>= f)<br>
+                                                        some = 0;<br>
+                                                        for (int j = 0; j < f; j++) <br>cout << frames[j] << " " ; <br>
+                                                                cout << "x" << "\n" ; <br>}<br> // v
+                                                                    indicate hit and x indicates fault <br>else
+                                                                    <br>{
+                                                                    <br>for (int j=0; j < f; j++) <br>cout << frames[j]
+                                                                            << " " ;<br> cout << "v" << "\n" ; <br>}<br>
+                                                                                } <br>/* no of page hits can also be
+                                                                                calculated by no of pages - no of
+                                                                                page
+                                                                                faults*/<br> cout
+                                                                                << "No of page hits = " << hit << "\n"
+                                                                                    << "No of page faults = " << fault
+                                                                                    << "\n" ;<br> return
+                                                                                    0;<br> }
+        </p>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,21 @@
+body {
+    margin: 0%;
+    padding-left: 15%;
+}
+
+p {
+    font-size: 1.25em;
+}
+
+ul {
+    font-size: 1.25em;
+    list-style-type: none;
+}
+
+.code {
+    padding-left: 2em;
+    width: 70vh;
+    /* height: 100vh; */
+    background-color: black;
+    color: white;
+}

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Least Recently Used</title>
+    <link rel="stylesheet" href="./fcfs.css">
+</head>
+
+<body>
+    <h1>LRU Page Replacement Algorithm</h1>
+    <h2>What are Replacement Algorithms?</h2>
+    <p>Generally, most operating systems use the method of paging for memory management. These algorithms are needed to
+        make a
+        decision of which page needs to be replaced when a new page comes into the picture or is demanded.
+
+        The need for the demand occurs when the Operating Systems need any page for the processing which is not actually
+        present
+        in the main memory. This situation is also called Page Fault.
+
+        Page Fault: The page fault takes place when the main program accesses the memory page which is mapped into a
+        virtual
+        address space but is not loaded in physical memory.
+
+        When the Physical Memory is much smaller than the Virtual Memory in such a situation Page Fault happens.</p>
+    <h2>What is LRU Page Replacement Algorithm</h2>
+    <p>The least recently used pages policy is used by websites to determine how often a site can be used. When a user
+        last
+        accessed a page, the site looks at the pages cached in the memory of the device, as well as the pages that were
+        accessed
+        recently. If a page was accessed recently, but is not included in the site’s cached pages, the site will use the
+        oldest
+        page from the site’s cache, unless that page has been deleted or the user has opted not to have pages cached in
+        their
+        device.</p>
+    <h2>Advantages of LRU</h2>
+    <p>-LRU is more efficient because it allows for data to be organized in itemized order. <br>
+        -LRU is more efficient because it can be marketed to businesses because it is easy to use. <br>
+        -LRU is more efficient because it can be accessed more quickly. <br>
+        -LRU is more efficient because it can be used to keep track of data in a large organization. <br>
+        -LRU is more efficient because it can be used in a variety of applications.</p>
+    <h2>LRU Page Replacement Algorithm</h2>
+    <ul>
+        <li>1. Start traversing the pages</li>
+        <li>2. If set holds less pages than capacity. </li>
+        <li>3. Insert page into the set one by one until
+            the size of set reaches capacity or all
+            page requests are processed.</li>
+        <li>4. Simultaneously maintain the recent occurred
+            index of each page in a map called indexes.</li>
+        <li>5. Increment page fault</li>
+        <li>6. Else
+            If current page is present in set, do nothing.</li>
+        <li>7. Else Find the page in the set that was least
+            recently used. We find it using index array.
+            We basically need to replace the page with
+            minimum index.</li>
+        <li>8. Replace the found page with current page.</li>
+        <li>9. Increment page faults.</li>
+        <li>10. Update index of current page.</li>
+        <li>11. Return page faults.</li>
+        <li>12. Stop.</li>
+    </ul>
+
+    <label for="pages">Enter No.of Pages</label>
+    <input type="number" name="pages" id="pages" class="pages">
+
+    <label for="frames">Enter No.of Frames</label>
+    <input type="number" name="frames" id="frames" class="frames">
+
+    <button onclick="validate()">submit</button>
+    <div id="empty"></div>
+
+    <script>
+        function pageFaults(pages, n, capacity) {
+            // To represent set of current pages. We use
+            // an unordered_set so that we quickly check
+            // if a page is present in set or not
+            let s = new Set();
+
+            // To store least recently used indexes
+            // of pages.
+            let indexes = new Map();
+
+            // Start from initial page
+            let page_faults = 0;
+            for (let i = 0; i < n; i++) {
+                // Check if the set can hold more pages
+                if (s.size < capacity) {
+                    // Insert it into set if not present
+                    // already which represents page fault
+                    if (!s.has(pages[i])) {
+                        s.add(pages[i]);
+
+                        // increment page fault
+                        page_faults++;
+                    }
+
+                    // Store the recently used index of
+                    // each page
+                    indexes.set(pages[i], i);
+                }
+
+                // If the set is full then need to perform lru
+                // i.e. remove the least recently used page
+                // and insert the current page
+                else {
+                    // Check if current page is not already
+                    // present in the set
+                    if (!s.has(pages[i])) {
+                        // Find the least recently used pages
+                        // that is present in the set
+                        let lru = Number.MAX_VALUE, val = Number.MIN_VALUE;
+
+
+
+                        for (let itr of s.values()) {
+                            let temp = itr;
+                            if (indexes.get(temp) < lru) {
+                                lru = indexes.get(temp);
+                                val = temp;
+                            }
+                        }
+
+                        // Remove the indexes page
+                        s.delete(val);
+                        //remove lru from hashmap
+                        indexes.delete(val);
+                        // insert the current page
+                        s.add(pages[i]);
+
+                        // Increment page faults
+                        page_faults++;
+                    }
+
+                    // Update the current page index
+                    indexes.set(pages[i], i);
+                }
+            }
+
+            return page_faults;
+        }
+        function pageHits(pages, n, capacity) {
+            // To represent set of current pages. We use
+            // an unordered_set so that we quickly check
+            // if a page is present in set or not
+            let s = new Set();
+
+            // To store least recently used indexes
+            // of pages.
+            let indexes = new Map();
+
+            // Start from initial page
+            let page_faults = 0;
+            for (let i = 0; i < n; i++) {
+                // Check if the set can hold more pages
+                if (s.size < capacity) {
+                    // Insert it into set if not present
+                    // already which represents page fault
+                    if (!s.has(pages[i])) {
+                        s.add(pages[i]);
+
+                        // increment page fault
+                        page_faults++;
+                    }
+
+                    // Store the recently used index of
+                    // each page
+                    indexes.set(pages[i], i);
+                }
+
+                // If the set is full then need to perform lru
+                // i.e. remove the least recently used page
+                // and insert the current page
+                else {
+                    // Check if current page is not already
+                    // present in the set
+                    if (!s.has(pages[i])) {
+                        // Find the least recently used pages
+                        // that is present in the set
+                        let lru = Number.MAX_VALUE, val = Number.MIN_VALUE;
+
+
+
+                        for (let itr of s.values()) {
+                            let temp = itr;
+                            if (indexes.get(temp) < lru) {
+                                lru = indexes.get(temp);
+                                val = temp;
+                            }
+                        }
+
+                        // Remove the indexes page
+                        s.delete(val);
+                        //remove lru from hashmap
+                        indexes.delete(val);
+                        // insert the current page
+                        s.add(pages[i]);
+
+                        // Increment page faults
+                        page_faults++;
+                    }
+
+                    // Update the current page index
+                    indexes.set(pages[i], i);
+                }
+            }
+
+            return n - page_faults;
+        }
+        function validate() {
+
+            var p = document.getElementById("pages").value;
+            var f = document.getElementById("frames").value;
+            var pag = new Array(p);
+            for (var i = 0; i < p; i++) {
+                pag[i] = prompt("Enter page" + (i + 1) + " reference string: ");
+            }
+            document.writeln("No of Page Hits = " + pageHits(pag, p, f) + "<br/>");
+            document.writeln("No of Page Faults = " + pageFaults(pag, p, f));
+        }
+    </script>
+
+
+
+    <h1>Source Code</h1>
+    <div class="code">
+        <p>#include "bits /stdc++.h"<br>
+            using namespace std;<br>
+
+            /*--------------return the index of the minimum pointer of the frame index which is least recently
+            used------------*/ <br>
+            int minfun(int a[], int n) <br>
+            {<br>
+            int mini = INT_MAX, index;<br>
+            for (int i = 0; i < n; i++)<br> {<br> if (a[i] < mini)<br> {<br> mini=a[i];<br> index=i;<br> }<br> }<br>
+                    return index;<br> }<br> /*------------main
+                    algorithm starts--------------*/ <br>int main() <br>{ <br>/*takes no of pages and no of frames*/<br>
+                    int frame, page;<br> cout
+                    << "Enter no of pages: " ; <br>cin>> page;<br>
+                        cout << "Enter no of frames: " ; <br>cin>> frame;<br>
+
+                            /*takes page reference strings*/<br>
+                            int pages[page], frames[frame];<br>
+                            cout << "Enter page reference strings\n" ; <br>for (int i=0; i < page; i++)<br> {<br> cin>>
+                                    pages[i];<br>
+                                    }<br>
+
+                                    /*initially frames are empty so till the frames are full the frames are filled and
+                                    every insertion is
+                                    treated as fault*/<br>
+                                    int index[frame];<br>
+                                    for (int i = 0; i < frame; i++) <br>{<br> frames[i]=pages[i];<br> index[i]=i;<br>
+                                        for (int j=0; j <=i; j++)<br> cout << frames[j] << " " ;<br> cout << "x" ; cout
+                                                    << '\n' ;<br> }<br> int fault=frame, hit=0; <br>/*from here actual
+                                                    faults
+                                                    are checked*/ <br>for (int i=frame; i < page; i++) <br>{<br> int
+                                                        bit=0; int flag=0;<br> /*checks if the page
+                                                        reference string is present in the frames or not*/<br> for (int
+                                                        j=0; j < frame; j++)<br> {<br> if
+                                                            (pages[i]==frames[j])<br> {<br> flag=1; <br>index[j]=i;<br>
+                                                            }<br> } <br>int x=minfun(index, frame);<br> /*if the page
+                                                            reference
+                                                            string is present in the frame*/ <br>if (flag==1)<br> {<br>
+                                                            hit++;<br> bit=1; <br>}<br> /*when page reference string is
+                                                            not
+                                                            present in the string*/<br> else<br> {<br>
+                                                            frames[x]=pages[i];<br> fault++;<br> index[x]=i;<br> }<br>
+                                                            /*displays the page
+                                                            reference strings present in the frames at that
+                                                            instant*/<br> for (int k=0; k < frame; k++) <br>cout <<
+                                                                    frames[k] << " " ;<br> if (bit ? cout << "v" : cout
+                                                                        << "x" )<br> cout << '\n' ; <br>}<br> /*outputs
+                                                                            no of page hits
+                                                                            and no of page faults*/<br> cout
+                                                                            << "No of Page hits: " << hit << "\n" ; <br>
+                                                                                cout << "No of Page faults: " << fault
+                                                                                    << "\n" ;<br> return 0; <br>}
+        </p>
+    </div>
+</body>
+
+</html>

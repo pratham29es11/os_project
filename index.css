@@ -1,0 +1,79 @@
+body {
+    padding: 0%;
+    margin: 0%;
+    background-color: lightcyan;
+}
+
+.body1 {
+    /* border: 1px solid black; */
+    margin: auto;
+    width: 75%;
+    height: 100vh;
+    background-color: white;
+    z-index: 6;
+}
+
+.main {
+    margin: auto;
+    height: 35vh;
+    width: 95%;
+    background-image: url(./images/clg.webp);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.proj {
+    margin: auto;
+    margin-top: 2.5%;
+    width: 95%;
+    height: 50vh;
+    background-color: lightgray;
+    border-top: 0.25px solid black;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    box-shadow: 40%;
+}
+
+.os {
+    width: 25%;
+    height: 40vh;
+    background-color: white;
+    border-radius: 1em;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: bold;
+    box-shadow: 4em;
+}
+
+.os h3 {
+    padding: 1em;
+    border-radius: 1em;
+    text-align: center;
+    margin: 0%;
+    height: 10%;
+    background-color: gold;
+    border: 0.5px solid green;
+}
+
+.os ul {
+    list-style-type: none;
+}
+
+.os a {
+    color: red;
+    text-decoration: none;
+    text-align: center;
+}
+
+.os h3 {
+    color: #000000;
+    /* padding-top: 1.5em; */
+    font-size: 18px;
+}
+
+.os p {
+    color: #000000;
+    font-weight: lighter;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 20px;
+}
